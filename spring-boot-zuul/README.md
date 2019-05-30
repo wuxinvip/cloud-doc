@@ -10,7 +10,14 @@
 ## 配置
 
 ```yaml
+#启动类
+@EnableZuulServer
+【前置处理器Pre filters、返回处理器Post filters、错误拦截处理器SendErrorFilter】
 
+#properties
+zuul
+  routes:
+    api: /api/**
 #url转发
 #zuul.routes.api-a-url.path=/api-a/**
 #zuul.routes.api-a-url.url=http://127.0.0.1:9000/
@@ -40,6 +47,37 @@ spring.application.name=api-gateway
 #也可以采用此种配置获取uri地址
 spring.application.name=api-gateway
 spring.cloud.config.uri=http://config.wuxinvip.com
+
+#熔断配置
+hystrix:
+  command:
+    myusers-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: ...
+#service超时设置
+myusers-service:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: https://example1.com,http://example2.com
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
+
+ribbon:
+  eureka:
+    enabled: false
+
+users:
+  ribbon:
+    listOfServers: example.com,google.com
+    
+    
+zuul:
+  forceOriginalQueryStringEncoding: true
+  decodeUrl: false
 
 ```
 
