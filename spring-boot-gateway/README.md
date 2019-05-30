@@ -72,6 +72,49 @@ server:
     key-store: classpath:scg-keystore.p12
     key-store-type: PKCS12
 ```
+*   java-config
+```
+/**
+     * @title: 全局filter
+     * @description: 
+     * @author: lianyanjin
+     * @date: 2019/5/30 14:21
+     * @param 
+     * @return 
+     */
+    @Bean
+    @Order(-1)
+    public GlobalFilter a() {
+        return (exchange, chain) -> {
+            logger.info("first pre filter");
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                logger.info("third post filter");
+            }));
+        };
+    }
+
+    @Bean
+    @Order(0)
+    public GlobalFilter b() {
+        return (exchange, chain) -> {
+            logger.info("second pre filter");
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                logger.info("second post filter");
+            }));
+        };
+    }
+
+    @Bean
+    @Order(1)
+    public GlobalFilter c() {
+        return (exchange, chain) -> {
+            logger.info("third pre filter");
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                logger.info("first post filter");
+            }));
+        };
+    }
+```
 
 ## 流程说明
 
