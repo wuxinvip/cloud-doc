@@ -10,6 +10,10 @@
 ## 配置
 
 ```yaml
+#启动类
+
+
+
 #server
 
 spring:
@@ -21,18 +25,31 @@ spring:
           uri: https://github.com/wuxinvip/base-cloud-config.git
           # 本地文件夹存放
           #uri: file://${user.home}/config-repo
+          skipSslValidation: true
+          timeout: 4
           username:
           password:
-          #多文件加指定
-          search-paths: wuxinvip-message
-          search-paths: wuxinvip-uc-api
-          search-paths: wuxinvip-uc-service
-          search-paths: wuxinvip-uc-repository
-          search-paths: wuxinvip-project-api
-          search-paths: wuxinvip-project-service
-          search-paths: wuxinvip-project-repository
           #开启强势拉取
           force-pull: true
+          #多仓库配置
+           repos:
+              development:
+                pattern:
+                  - '*/development'
+                  - '*/staging'
+                uri: https://github.com/development/config-repo
+              staging:
+                pattern:
+                  - '*/qa'
+                  - '*/production'
+                uri: https://github.com/staging/config-repo
+              simple: https://github.com/simple/config-repo
+                special:
+                  pattern: special*/dev*,*special*/dev*
+                  uri: https://github.com/special/config-repo
+                local:
+                  pattern: local*
+                  uri: file:/home/configsvc/config-repo
 
 #config-server
 #8020-8030
