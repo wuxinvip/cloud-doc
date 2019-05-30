@@ -73,7 +73,7 @@ ribbon:
 users:
   ribbon:
     listOfServers: example.com,google.com
-    
+    retryableStatusCodes: 404,502
     
 zuul:
   forceOriginalQueryStringEncoding: true
